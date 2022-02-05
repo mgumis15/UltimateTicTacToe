@@ -53,7 +53,6 @@ public class App extends Application  {
     Button startButton=new Button("Start Game");
 
     startButton.setOnAction(action ->{
-        this.engine.start();
         this.visualizer.draw();
         primaryStage.setScene(sceneMain);
 

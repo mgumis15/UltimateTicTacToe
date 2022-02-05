@@ -9,6 +9,8 @@ import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.io.FileNotFoundException;
 
@@ -47,8 +49,10 @@ public class BoardVisualizer {
         smallGrid.setHgap(5);
         smallGrid.setVgap(5);
         box.getChildren().add(smallGrid);
+        field.setBox(box);
         this.mainGrid.add(box,field.getCoords().x,field.getCoords().y);
         if(field instanceof BoxField){
+            ((BoxField) field).setGrid(smallGrid);
             Board smallBoard= ((BoxField) field).getSmallBoard();
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
@@ -56,24 +60,30 @@ public class BoardVisualizer {
                 }
             }
         }
-
-
     }
 
-    public void drawField(AbstractField field,AbstractField parent,GridPane smallGrid) {
+    public void drawField(AbstractField child,AbstractField parent,GridPane smallGrid) {
 //        this.clear();
-        HBox box=new HBox();
+        Text fllText=new Text("");
+        fllText.setStyle("-fx-font: 30 arial;");
+        HBox box=new HBox(fllText);
+        box.setAlignment(Pos.CENTER);
         box.setPrefWidth(60);
         box.setPrefHeight(60);
         box.setSpacing(5);
         box.setStyle("-fx-background-color: #dfdfdf;");
-        smallGrid.add(box,field.getCoords().x,field.getCoords().y);
+        smallGrid.add(box,child.getCoords().x,child.getCoords().y);
+        child.setBox(box);
         box.hoverProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
                 box.setStyle("-fx-background-color: #03fc98;");
                 if(newValue){
-                    box.setStyle("-fx-background-color: #03fc98;");
+                    if(engine.isAvalible(child,parent)){
+                        box.setStyle("-fx-background-color: #03fc98;");
+                    }else{
+                        box.setStyle("-fx-background-color: #ffc7de;");
+                    }
                 }else{
                     box.setStyle("-fx-background-color: #dfdfdf;");
                 }
@@ -82,7 +92,18 @@ public class BoardVisualizer {
         box.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println(field.getCoords().toString()+parent.getCoords().toString());
+                System.out.println(parent.getCoords().toString()+child.getCoords().toString());
+                if(engine.isAvalible(child,parent)){
+
+                    if(engine.getCurrentPlayer()%2==0){
+                        fllText.setFill(Color.rgb(252,3,82));
+                        fllText.setText("X");
+                    }else{
+                        fllText.setFill(Color.rgb(3,194,252));
+                        fllText.setText("O");
+                    }
+
+                }
             }
         });
 
