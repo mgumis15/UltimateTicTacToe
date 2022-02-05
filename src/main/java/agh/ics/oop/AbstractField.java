@@ -1,6 +1,6 @@
 package agh.ics.oop;
 
-abstract class AbstractField implements  IField{
+public abstract class AbstractField implements  IField{
     protected Coordinates coords;
     protected boolean avalible=true;
     protected int player;
@@ -20,4 +20,11 @@ abstract class AbstractField implements  IField{
         return avalible;
     }
 
+    public Coordinates getCoords() {
+        return coords;
+    }
+
+    public int getPlayer() {
+        return player;
+    }
 }

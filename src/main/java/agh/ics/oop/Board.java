@@ -25,5 +25,7 @@ public class Board {
 
     }
 
-
+    public ArrayList<ArrayList<AbstractField>> getBoard() {
+        return board;
+    }
 }
