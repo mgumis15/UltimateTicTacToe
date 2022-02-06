@@ -4,15 +4,12 @@ import agh.ics.oop.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import java.io.FileNotFoundException;
 
 public class BoardVisualizer {
     private Board mainBoard;
@@ -77,37 +74,39 @@ public class BoardVisualizer {
         box.hoverProperty().addListener(new ChangeListener<Boolean>() {
             @Override
             public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                box.setStyle("-fx-background-color: #03fc98;");
-                if(newValue){
-                    if(engine.isAvalible(child,parent)){
-                        box.setStyle("-fx-background-color: #03fc98;");
+                if(engine.isRunning()){
+                    if(newValue){
+                        if(engine.isAvalible(child,parent)){
+                            box.setStyle("-fx-background-color: #03fc98;");
+                        }else{
+                            box.setStyle("-fx-background-color: #ffc7de;");
+                        }
                     }else{
-                        box.setStyle("-fx-background-color: #ffc7de;");
+                        child.setColor(null);
                     }
-                }else{
-                    box.setStyle("-fx-background-color: #dfdfdf;");
                 }
+
             }
         });
         box.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println(parent.getCoords().toString()+child.getCoords().toString());
-                if(engine.isAvalible(child,parent)){
+                if(engine.isRunning()){
+                    if(engine.isAvalible(child,parent)){
 
-                    if(engine.getCurrentPlayer()%2==0){
-                        fllText.setFill(Color.rgb(252,3,82));
-                        fllText.setText("X");
-                    }else{
-                        fllText.setFill(Color.rgb(3,194,252));
-                        fllText.setText("O");
+                        if(engine.getCurrentPlayer()%2==0){
+                            fllText.setFill(Color.rgb(252,3,82));
+                            fllText.setText("X");
+                        }else{
+                            fllText.setFill(Color.rgb(3,194,252));
+                            fllText.setText("O");
+                        }
+                        engine.onSelect(child,parent);
                     }
-
                 }
+
             }
         });
-
-
     }
 
     public void clear(){

@@ -12,4 +12,18 @@ public class Coordinates {
     public String toString(){
         return "("+this.x+","+this.y+")";
     }
+
+    public boolean equals(Object other) {
+        if (this == other)
+            return true;
+        if (!(other instanceof Coordinates))
+            return false;
+        Coordinates that = (Coordinates) other;
+        if (this.x == that.x && this.y == that.y) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -7,6 +7,7 @@ public abstract class AbstractField implements  IField{
     protected boolean avalible=true;
     protected int player;
     protected HBox box;
+    protected String color="#dfdfdf";
     public AbstractField(Coordinates coords){
         this.coords=coords;
     }
@@ -36,5 +37,17 @@ public abstract class AbstractField implements  IField{
 
     public HBox getBox() {
         return box;
+    }
+
+    public void setColor(String color) {
+        if(color!=null){
+            this.color = color;
+        }
+        this.box.setStyle("-fx-background-color:"+this.color+";");
+    }
+
+    public String getColor() {
+
+        return color;
     }
 }
