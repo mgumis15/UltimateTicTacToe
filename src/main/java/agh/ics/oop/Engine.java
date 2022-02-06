@@ -89,9 +89,9 @@ public class Engine {
             if(this.isRunning()){
                 this.currentPlayer+=1;
                 if(this.currentPlayer%2==0){
-                    this.textOnTop.setText("Ruch gracza X");
+                    this.textOnTop.setText("X player turn");
                 }else{
-                    this.textOnTop.setText("Ruch gracza O");
+                    this.textOnTop.setText("O player turn");
 
                 }
             }
@@ -106,9 +106,9 @@ public class Engine {
         this.setRunning(false);
         this.app.resetTimer();
         if(this.currentPlayer%2==0){
-            this.textOnTop.setText("Wygrana gracza X!");
+            this.textOnTop.setText("X WINS!");
         }else{
-            this.textOnTop.setText("Wygrana gracza O!");
+            this.textOnTop.setText("O WINS!");
         }
        this.showGrid(false);
     }

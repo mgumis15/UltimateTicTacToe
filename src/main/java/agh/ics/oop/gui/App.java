@@ -36,7 +36,7 @@ public class App extends Application  {
     public void init(){
         try {
 
-            System.out.println("system wystartował");
+            System.out.println("System started");
 
         }catch(IllegalArgumentException ex){
             System.out.println(ex);
@@ -49,7 +49,7 @@ public class App extends Application  {
     this.mainGrid.setMaxWidth(1000);
     this.visualizer=new BoardVisualizer(this.engine,this.mainGrid);
 
-    this.textOnTop=new Text("Ruch gracza X");
+    this.textOnTop=new Text("X player turn");
     this.textOnTop.setStyle("-fx-font: 35 arial;");
     this.timerText=new Text("");
     this.timerText.setStyle("-fx-font: 24 arial;");
@@ -130,7 +130,7 @@ public class App extends Application  {
 
     });
 
-    Text timerLabel=new Text("Podaj czas: ");
+    Text timerLabel=new Text("Timer: ");
     this.timerSpan=new TextField();
         this.timerSpan.setText("15");
         HBox timerSpanBox=new HBox(timerLabel,this.timerSpan);
@@ -155,11 +155,11 @@ public class App extends Application  {
                 int i=Integer.parseInt(timerSpan.getText());
                 @Override
                 public void run() {
-                    timerText.setText("Czas na ruch: "+String.valueOf(i));
+                    timerText.setText("Timer: "+String.valueOf(i));
                     i--;
                     if(i<0){
                         timer.cancel();
-                        timerText.setText("Koniec czasu");
+                        timerText.setText("Time's up!");
                         engine.setCurrentPlayer(engine.getCurrentPlayer()+1);
                         engine.onWin();
                     }
