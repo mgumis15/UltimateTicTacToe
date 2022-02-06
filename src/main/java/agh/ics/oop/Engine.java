@@ -1,7 +1,10 @@
 package agh.ics.oop;
 
 import agh.ics.oop.data.DataService;
+import agh.ics.oop.gui.App;
+import javafx.scene.control.Button;
 import javafx.scene.text.Text;
+
 
 public class Engine {
     protected Board mainBoard;
@@ -9,7 +12,9 @@ public class Engine {
     protected Coordinates lastCoordinates=null;
     protected boolean running=false;
     protected Text textOnTop;
+    protected App app;
     protected DataService dataService;
+    protected Button showButton;
     public Engine(DataService dataService){
         this.mainBoard=new Board(true);
         this.dataService=dataService;
@@ -36,7 +41,7 @@ public class Engine {
 
         if(this.isAvalible(child,parent)){
             child.mark(this.currentPlayer);
-
+            this.app.resetTimer();
             dataService.addData(this.currentPlayer,parent.getCoords(),child.getCoords());
             if(parent instanceof BoxField){
                 if(((BoxField) parent).getSmallBoard().checkWin()){
@@ -45,14 +50,9 @@ public class Engine {
                     ((BoxField) parent).drawCurrentWinner();
                     if(this.mainBoard.checkWin()){
 //KONIEC GRY
-                        this.mainBoard.drawFinallWinner(this.currentPlayer);
-                        this.setRunning(false);
-                        if(this.currentPlayer%2==0){
-                            this.textOnTop.setText("Wygrana gracza X!");
-                        }else{
-                            this.textOnTop.setText("Wygrana gracza O!");
 
-                        }
+                       this.onWin();
+
                     }
                 }else{
                     ((BoxField) parent).checkAvability();
@@ -84,12 +84,37 @@ public class Engine {
         }
     }
 
+    public void onWin(){
+        this.showButton.setVisible(true);
+        this.mainBoard.drawFinallWinner(this.currentPlayer);
+        this.setRunning(false);
+        if(this.currentPlayer%2==0){
+            this.textOnTop.setText("Wygrana gracza X!");
+        }else{
+            this.textOnTop.setText("Wygrana gracza O!");
+        }
+       this.showGrid(false);
+    }
+    public void showGrid(boolean show){
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j <3; j++) {
+                for (int k = 0; k < 9; k++) {
+                    ((BoxField) this.mainBoard.getBoard().get(i).get(j)).getGrid().getChildren().get(k).setVisible(show);
+                }
+            }
+        }
+    }
+
     public Board getMainBoard() {
         return mainBoard;
     }
 
     public int getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
     }
 
     public void setRunning(boolean running) {
@@ -102,5 +127,13 @@ public class Engine {
 
     public void setTextOnTop(Text textOnTop) {
         this.textOnTop = textOnTop;
+    }
+
+    public void setApp(App app) {
+        this.app = app;
+    }
+
+    public void setShowButton(Button showButton) {
+        this.showButton = showButton;
     }
 }

@@ -18,6 +18,7 @@ import javax.xml.crypto.Data;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class App extends Application  {
@@ -28,6 +29,11 @@ public class App extends Application  {
     private Text textOnTop;
     private DataService dataService=new DataService();
     private Engine engine=new Engine(this.dataService);
+    protected TimerTask timerTask;
+    protected Timer timer;
+    protected Text timerText;
+    public Button showButon;
+    protected boolean visibleGrid=false;
     public void init(){
         try {
 
@@ -46,7 +52,10 @@ public class App extends Application  {
 
     this.textOnTop=new Text("Ruch gracza X");
     this.textOnTop.setStyle("-fx-font: 35 arial;");
+    this.timerText=new Text("");
+    this.timerText.setStyle("-fx-font: 24 arial;");
     engine.setTextOnTop(this.textOnTop);
+    engine.setApp(this);
 
     TableView<Move> moveList=new TableView<>();
     TableColumn<Move,String> columnRound = new TableColumn<>("Round");
@@ -63,7 +72,7 @@ public class App extends Application  {
     moveList.getColumns().add(columnPlayer);
     moveList.getColumns().add(columnPosition);
 
-        Timer timer=new Timer();
+
 
     this.dataService.setMoveList(moveList);
 
@@ -78,6 +87,15 @@ public class App extends Application  {
 
 
     });
+
+    this.showButon=new Button("Show board");
+    this.showButon.setVisible(false);
+    this.showButon.setOnAction(action ->{
+        this.engine.showGrid(this.visibleGrid);
+        this.visibleGrid=!this.visibleGrid;
+    });
+    this.engine.setShowButton(this.showButon);
+
     ScrollPane scrollPane=new ScrollPane();
     scrollPane.pannableProperty().set(true);
     scrollPane.setMaxWidth(400);
@@ -86,11 +104,11 @@ public class App extends Application  {
     scrollPane.setContent(moveList);
 
 
-    VBox boardBox=new VBox(this.textOnTop,this.mainGrid);
+    VBox boardBox=new VBox(this.textOnTop,this.mainGrid,this.showButon);
         boardBox.setSpacing(30);
         boardBox.setAlignment(Pos.CENTER);
 
-    VBox dataBox=new VBox(scrollPane,saveDataButton);
+    VBox dataBox=new VBox(timerText,scrollPane,saveDataButton);
         dataBox.setSpacing(30);
         dataBox.setAlignment(Pos.CENTER);
 
@@ -106,6 +124,8 @@ public class App extends Application  {
 
     startButton.setOnAction(action ->{
         this.engine.setRunning(true);
+        this.resetTimer();
+
         this.visualizer.draw();
         primaryStage.setScene(sceneMain);
 
@@ -119,6 +139,29 @@ public class App extends Application  {
     primaryStage.setScene(sceneStart);
     primaryStage.show();
 
+    }
+
+    public void  resetTimer(){
+        if(this.timer!=null){
+            this.timer.cancel();
+        }
+
+        this.timer=new Timer();
+        this.timerTask=new TimerTask() {
+            int i=15;
+            @Override
+            public void run() {
+                timerText.setText("Czas na ruch: "+String.valueOf(i));
+                i--;
+                if(i<0){
+                    timer.cancel();
+                    timerText.setText("Koniec czasu");
+                    engine.setCurrentPlayer(engine.getCurrentPlayer()+1);
+                    engine.onWin();
+                }
+            }
+        };
+        this.timer.schedule(this.timerTask,0,1000);
     }
 
 
