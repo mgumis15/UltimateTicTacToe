@@ -1,5 +1,9 @@
 package agh.ics.oop;
 
+import agh.ics.oop.components.AbstractField;
+import agh.ics.oop.components.Board;
+import agh.ics.oop.components.BoxField;
+import agh.ics.oop.components.Coordinates;
 import agh.ics.oop.data.DataService;
 import agh.ics.oop.gui.App;
 import javafx.scene.control.Button;
@@ -21,7 +25,7 @@ public class Engine {
     }
 
 
-    public boolean isAvalible(AbstractField child,AbstractField parent){
+    public boolean isAvalible(AbstractField child, AbstractField parent){
 
             if(this.lastCoordinates==null){
                 if(parent.isAvalible()&&child.isAvalible()){
@@ -40,6 +44,11 @@ public class Engine {
     public void onSelect(AbstractField child,AbstractField parent){
 
         if(this.isAvalible(child,parent)){
+            for (int i = 0; i < 3; i++) {
+                for (int j = 0; j < 3; j++) {
+                    ((BoxField)this.mainBoard.getBoard().get(i).get(j)).getGrid().setStyle("-fx-background-color: null;");
+                }
+            }
             child.mark(this.currentPlayer);
             this.app.resetTimer();
             dataService.addData(this.currentPlayer,parent.getCoords(),child.getCoords());
@@ -50,7 +59,11 @@ public class Engine {
                     ((BoxField) parent).drawCurrentWinner();
                     if(this.mainBoard.checkWin()){
 //KONIEC GRY
-
+                        for (int i = 0; i < 3; i++) {
+                            for (int j = 0; j < 3; j++) {
+                                ((BoxField)this.mainBoard.getBoard().get(i).get(j)).getGrid().setStyle("-fx-background-color: null;");
+                            }
+                        }
                        this.onWin();
 
                     }
@@ -59,14 +72,16 @@ public class Engine {
                 }
             }
             if(this.mainBoard.getBoard().get(child.getCoords().y).get(child.getCoords().x).isAvalible()&&this.isRunning()){
-                if(this.lastCoordinates!=null){
-                ((BoxField)this.mainBoard.getBoard().get(this.lastCoordinates.y).get(this.lastCoordinates.x)).getGrid().setStyle("-fx-background-color: null;");
-                }
                 this.lastCoordinates=child.getCoords();
                 ((BoxField)this.mainBoard.getBoard().get(child.getCoords().y).get(child.getCoords().x)).getGrid().setStyle("-fx-background-color: #bfffe2;");
             }else{
-                if(this.lastCoordinates!=null){
-                    ((BoxField)this.mainBoard.getBoard().get(this.lastCoordinates.y).get(this.lastCoordinates.x)).getGrid().setStyle("-fx-background-color: null;");
+                if(this.isRunning()){
+                    for (int i = 0; i < 3; i++) {
+                        for (int j = 0; j < 3; j++) {
+                            if(this.mainBoard.getBoard().get(i).get(j).isAvalible())
+                                ((BoxField)this.mainBoard.getBoard().get(i).get(j)).getGrid().setStyle("-fx-background-color: #bfffe2;");
+                        }
+                    }
                 }
                 this.lastCoordinates=null;
 
@@ -85,9 +100,11 @@ public class Engine {
     }
 
     public void onWin(){
+
         this.showButton.setVisible(true);
         this.mainBoard.drawFinallWinner(this.currentPlayer);
         this.setRunning(false);
+        this.app.resetTimer();
         if(this.currentPlayer%2==0){
             this.textOnTop.setText("Wygrana gracza X!");
         }else{
@@ -95,6 +112,7 @@ public class Engine {
         }
        this.showGrid(false);
     }
+
     public void showGrid(boolean show){
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j <3; j++) {

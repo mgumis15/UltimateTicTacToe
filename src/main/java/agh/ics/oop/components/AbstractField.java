@@ -1,8 +1,8 @@
-package agh.ics.oop;
+package agh.ics.oop.components;
 
 import javafx.scene.layout.HBox;
 
-public abstract class AbstractField implements  IField{
+public abstract class AbstractField implements IField {
     protected Coordinates coords;
     protected boolean avalible=true;
     protected int player;
@@ -35,9 +35,6 @@ public abstract class AbstractField implements  IField{
         this.box = box;
     }
 
-    public HBox getBox() {
-        return box;
-    }
 
     public void setColor(String color) {
         if(color!=null){
@@ -46,8 +43,4 @@ public abstract class AbstractField implements  IField{
         this.box.setStyle("-fx-background-color:"+this.color+";");
     }
 
-    public String getColor() {
-
-        return color;
-    }
 }

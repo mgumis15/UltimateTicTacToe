@@ -1,6 +1,9 @@
 package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
+import agh.ics.oop.components.AbstractField;
+import agh.ics.oop.components.Board;
+import agh.ics.oop.components.BoxField;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -36,7 +39,6 @@ public class BoardVisualizer {
 
     }
     public void drawBoxField(AbstractField field) {
-//        this.clear();
         HBox box=new HBox();
         box.setPrefWidth(180);
         box.setPrefHeight(180);
@@ -60,7 +62,6 @@ public class BoardVisualizer {
     }
 
     public void drawField(AbstractField child,AbstractField parent,GridPane smallGrid) {
-//        this.clear();
         Text fllText=new Text("");
         fllText.setStyle("-fx-font: 30 arial;");
         HBox box=new HBox(fllText);
@@ -109,16 +110,5 @@ public class BoardVisualizer {
         });
     }
 
-    public void clear(){
-        this.mainGrid.getChildren().clear();
-
-        while(this.mainGrid.getRowConstraints().size() > 0){
-            this.mainGrid.getRowConstraints().remove(0);
-        }
-
-        while(this.mainGrid.getColumnConstraints().size() > 0){
-            this.mainGrid.getColumnConstraints().remove(0);
-        }
-    }
 
 }

@@ -1,9 +1,8 @@
 package agh.ics.oop.data;
 
-import agh.ics.oop.Coordinates;
-import agh.ics.oop.Move;
+import agh.ics.oop.components.Coordinates;
+import agh.ics.oop.components.Move;
 import javafx.scene.control.TableView;
-import javafx.scene.text.Text;
 
 import java.io.FileWriter;
 import java.io.IOException;

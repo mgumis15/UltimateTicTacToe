@@ -1,4 +1,4 @@
-package agh.ics.oop;
+package agh.ics.oop.components;
 
 public class Move {
     public String round;

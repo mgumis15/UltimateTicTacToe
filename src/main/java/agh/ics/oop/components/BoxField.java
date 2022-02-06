@@ -1,8 +1,8 @@
-package agh.ics.oop;
+package agh.ics.oop.components;
 
 import javafx.scene.layout.GridPane;
 
-public class BoxField  extends  AbstractField{
+public class BoxField  extends AbstractField {
 
     protected Board smallBoard;
     protected GridPane grid;

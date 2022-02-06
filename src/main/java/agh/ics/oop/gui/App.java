@@ -1,9 +1,9 @@
 package agh.ics.oop.gui;
 
 import agh.ics.oop.*;
+import agh.ics.oop.components.Move;
 import agh.ics.oop.data.DataService;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,8 +14,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import javax.xml.crypto.Data;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,6 +32,7 @@ public class App extends Application  {
     protected Text timerText;
     public Button showButon;
     protected boolean visibleGrid=false;
+    protected TextField timerSpan;
     public void init(){
         try {
 
@@ -131,8 +130,13 @@ public class App extends Application  {
 
     });
 
-
-    VBox startMenu = new VBox(title,startButton);
+    Text timerLabel=new Text("Podaj czas: ");
+    this.timerSpan=new TextField();
+        this.timerSpan.setText("15");
+        HBox timerSpanBox=new HBox(timerLabel,this.timerSpan);
+        timerSpanBox.setSpacing(15);
+        timerSpanBox.setAlignment(Pos.CENTER);
+    VBox startMenu = new VBox(title,timerSpanBox,startButton);
     startMenu.setSpacing(20);
     startMenu.setAlignment(Pos.CENTER);
     Scene sceneStart=new Scene(startMenu,500,300);
@@ -145,23 +149,25 @@ public class App extends Application  {
         if(this.timer!=null){
             this.timer.cancel();
         }
-
-        this.timer=new Timer();
-        this.timerTask=new TimerTask() {
-            int i=15;
-            @Override
-            public void run() {
-                timerText.setText("Czas na ruch: "+String.valueOf(i));
-                i--;
-                if(i<0){
-                    timer.cancel();
-                    timerText.setText("Koniec czasu");
-                    engine.setCurrentPlayer(engine.getCurrentPlayer()+1);
-                    engine.onWin();
+        if(this.engine.isRunning()){
+            this.timer=new Timer();
+            this.timerTask=new TimerTask() {
+                int i=Integer.parseInt(timerSpan.getText());
+                @Override
+                public void run() {
+                    timerText.setText("Czas na ruch: "+String.valueOf(i));
+                    i--;
+                    if(i<0){
+                        timer.cancel();
+                        timerText.setText("Koniec czasu");
+                        engine.setCurrentPlayer(engine.getCurrentPlayer()+1);
+                        engine.onWin();
+                    }
                 }
-            }
-        };
-        this.timer.schedule(this.timerTask,0,1000);
+            };
+            this.timer.schedule(this.timerTask,0,1000);
+        }
+
     }
 
 

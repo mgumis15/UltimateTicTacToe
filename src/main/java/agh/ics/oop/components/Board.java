@@ -1,4 +1,5 @@
-package agh.ics.oop;
+package agh.ics.oop.components;
+
 
 import java.util.ArrayList;
 

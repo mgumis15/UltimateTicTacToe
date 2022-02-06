@@ -1,4 +1,4 @@
-package agh.ics.oop;
+package agh.ics.oop.components;
 
 public class Coordinates {
     public int x;
