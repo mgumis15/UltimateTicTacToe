@@ -44,7 +44,7 @@ public class App extends Application  {
     }
     @Override
     public void start(Stage primaryStage){
-
+        primaryStage.setTitle("ULTIMATE TIC TAC TOE ~ MATEUSZ MAZUR");
     this.mainGrid=new GridPane();
     this.mainGrid.setMaxWidth(1000);
     this.visualizer=new BoardVisualizer(this.engine,this.mainGrid);

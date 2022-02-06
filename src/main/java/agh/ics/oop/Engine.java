@@ -72,9 +72,19 @@ public class Engine {
                 }
             }
             if(this.mainBoard.getBoard().get(child.getCoords().y).get(child.getCoords().x).isAvalible()&&this.isRunning()){
+
                 this.lastCoordinates=child.getCoords();
                 ((BoxField)this.mainBoard.getBoard().get(child.getCoords().y).get(child.getCoords().x)).getGrid().setStyle("-fx-background-color: #bfffe2;");
             }else{
+                boolean avalible=false;
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        if(((BoxField)this.mainBoard.getBoard().get(i).get(j)).isAvalible())avalible=true;
+                    }
+                }
+                if(!avalible){
+                    this.onDraw();
+                }
                 if(this.isRunning()){
                     for (int i = 0; i < 3; i++) {
                         for (int j = 0; j < 3; j++) {
@@ -111,6 +121,14 @@ public class Engine {
             this.textOnTop.setText("O WINS!");
         }
        this.showGrid(false);
+    }
+
+    public void onDraw(){
+
+        this.setRunning(false);
+        this.app.resetTimer();
+        this.textOnTop.setText("DRAW!");
+
     }
 
     public void showGrid(boolean show){
