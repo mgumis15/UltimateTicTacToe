@@ -1,6 +1,5 @@
 # Ultimate Tic Tac Toe
 
-## Liczba punktów: ?
 
 ## Krótki opis 
 
@@ -36,5 +35,3 @@ Wygrywa ten z graczy, któremu udało się zdobyć DP w sposób taki, jak w klas
 * Śledzenie ruchów graczy, np. w spostaci listy
 * Możliwość ustalenia czasu na wykonanie ruchu (opcjonalne)
 
-## Przykład
-https://ultimate-t3.herokuapp.com/
